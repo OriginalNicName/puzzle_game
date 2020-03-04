@@ -1,6 +1,8 @@
 class PuzzleScene extends Phaser.Scene {
     map;
     player;
+    leftBlock;
+    rightBlock;
     wallLayer;
     interactLayer;
 
@@ -11,6 +13,8 @@ class PuzzleScene extends Phaser.Scene {
             frameWidth: 24,
             frameHeight: 24
         });
+        this.load.image('left-block', 'assets/left-block.png')
+        this.load.image('right-block', 'assets/right-block.png')
         this.load.tilemapTiledJSON('tilemap', 'assets/testmap.json');
     }
 
@@ -25,7 +29,6 @@ class PuzzleScene extends Phaser.Scene {
         this.wallLayer.setCollisionByProperty({
             collides: true
         });
-        //this.map.createStaticLayer('player', [landscape], 0, 0);
         this.interactLayer = this.map.createDynamicLayer('drop-points', landscape, 0, 0);
         this.interactLayer.setCollisionByProperty({
             collides: true
@@ -35,27 +38,40 @@ class PuzzleScene extends Phaser.Scene {
             object = this.retrieveCustomProperties(object);
             if (object.type === "playerSpawner") {
                 this.createPlayer(object);
+            } else if (object.type === "leftBlock") {
+                this.createLeftBlock(object);
+            } else if (object.type === "rightBlock") {
+                this.createRightBlock(object);
             }
         }, this);
         this.cursors = this.input.keyboard.createCursorKeys();
         this.camera = this.cameras.getCamera("");
         this.camera.setBounds(0, 0, this.map.widthInPixels, this.map.height * this.map.tileHeight);
     }
+
     createPlayer(object) {
         this.player = this.physics.add.sprite(object.x, object.y, 'player');
-        // this.player.setScale(0.5);
         this.player.setCollideWorldBounds(true);
         this.physics.add.collider(this.player, this.interactLayer, this.changeDirection, null, this);
+        // this.physics.add.collider(this.player, this.wallLayer, this.resetPlayer, null, this);
 
 
     }
 
+    createLeftBlock(object) {
+        this.leftBlock = this.physics.add.sprite(object.x, object.y, 'left-block');
+    }
+
+    createRightBlock(object) {
+        this.rightBlock = this.physics.add.sprite(object.x, object.y, 'right-block');
+    }
+
     update() {
+        this.player.enableBody = true;
         if (Phaser.Input.Keyboard.JustDown(this.cursors.space)) {
             this.movePlayer(this.player);
-            //this.player.update();
             let tile = this.wallLayer.getTileAtWorldXY(this.player.x, this.player.y);
-            if(tile){
+            if (tile) {
                 switch (tile.index) {
                     case 7:
                         this.resetPlayer();
@@ -68,19 +84,16 @@ class PuzzleScene extends Phaser.Scene {
     movePlayer(player) {
         player.body.collideWorldBounds = true;
         player.body.onWorldBounds = true;
-        player.enableBody(false, player.x, player.y, true, true);
-        // player.rotation = rotation;
         this.physics.velocityFromRotation(player.rotation, 300, player.body.velocity);
-       // this.physics.add.overlap(this.player, this.wallLayer, this.resetPlayer, null, this);
     }
 
     changeDirection() {
 
     }
 
-    resetPlayer(player, tile) {
-        player.disableBody(true, true);
-       
+    resetPlayer(player) {
+        this.player.destroy(true)
+        this.create();
     }
 
     retrieveCustomProperties(object) {
