@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="11" height="21" tilewidth="64" tileheight="64" infinite="0" nextlayerid="11" nextobjectid="7">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="11" height="21" tilewidth="64" tileheight="64" infinite="0" nextlayerid="11" nextobjectid="11">
  <tileset firstgid="1" name="puzzle-tileset" tilewidth="64" tileheight="64" spacing="2" margin="1" tilecount="72" columns="8">
   <image source="puzzle-tileset.png" width="528" height="594"/>
  </tileset>
@@ -37,12 +37,12 @@
  <layer id="6" name="drop-points" width="11" height="21">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,10,0,0,
+0,0,0,0,0,10,0,0,0,0,0,
 0,10,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,10,0,
 0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,10,0,0,0,0,0,0,0,
+0,0,0,0,0,0,10,0,0,0,0,
 0,0,0,0,0,0,0,0,10,0,0,
 0,0,10,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,
@@ -52,7 +52,7 @@
 0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,10,0,
 0,0,0,10,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,10,0,
@@ -64,6 +64,9 @@
    <point/>
   </object>
   <object id="5" name="leftBlock" type="leftBlock" x="608" y="1247">
+   <point/>
+  </object>
+  <object id="10" name="leftBlock" type="leftBlock" x="544" y="477">
    <point/>
   </object>
  </objectgroup>

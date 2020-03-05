@@ -23,6 +23,7 @@ class PuzzleScene extends Phaser.Scene {
     }
 
     create() {
+        this.leftBlocks = this.physics.add.staticGroup();
         this.map = this.make.tilemap({
             key: 'tilemap'
         });
@@ -57,26 +58,23 @@ class PuzzleScene extends Phaser.Scene {
     createPlayer(object) {
         this.player = this.physics.add.sprite(object.x, object.y, 'player');
         this.player.setCollideWorldBounds(true);
-        // this.physics.add.collider(this.player, this.interactLayer, this.changeDirection, null, this);
-        // this.physics.add.collider(this.player, this.wallLayer, this.resetPlayer, null, this);
-
-
     }
 
     createLeftBlock(object) {
-        this.leftBlock = this.physics.add.sprite(object.x, object.y, 'left-block').setImmovable();
-        
+        this.leftBlocks.create(object.x, object.y, 'left-block')
+
     }
 
     createRightBlock(object) {
         this.rightBlock = this.physics.add.sprite(object.x, object.y, 'right-block').setImmovable();
     }
 
-    createCollision(){
+    createCollision() {
         let wallLayer = this.map.getLayer('wall').tilemapLayer;
         wallLayer.setCollisionBetween(0, 1000);
         this.physics.add.collider(this.player, wallLayer, this.resetPlayer, null, this);
-        this.physics.add.collider(this.player, this.leftBlock);
+        this.physics.add.collider(this.player, this.leftBlocks, this.turnLeft, null, this);
+        this.physics.add.collider(this.player, this.rightBlocks, this.turnRight, null, this);
     }
 
     update() {
@@ -100,12 +98,20 @@ class PuzzleScene extends Phaser.Scene {
         this.physics.velocityFromRotation(player.rotation, 300, player.body.velocity);
     }
 
-    // changeDirection(player) {
-    //     if ()
-    // }
+    turnLeft(player) {
+        console.log(this.player);
+       this.player.setAngle(-90);
+       this.physics.velocityFromRotation(player.rotation, 300, player.body.velocity);
+    }
 
-    resetPlayer(player) {
-        this.player.destroy(true)
+    turnRight(player) {
+        console.log(this.player);
+       this.player.setAngle(90);
+       this.physics.velocityFromRotation(player.rotation, 300, player.body.velocity);
+    }
+
+    resetPlayer() {
+        this.player.destroy();
         this.create();
     }
 
