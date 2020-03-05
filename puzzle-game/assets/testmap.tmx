@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="11" height="21" tilewidth="64" tileheight="64" infinite="0" nextlayerid="11" nextobjectid="11">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="11" height="21" tilewidth="64" tileheight="64" infinite="0" nextlayerid="11" nextobjectid="19">
  <tileset firstgid="1" name="puzzle-tileset" tilewidth="64" tileheight="64" spacing="2" margin="1" tilecount="72" columns="8">
   <image source="puzzle-tileset.png" width="528" height="594"/>
  </tileset>
@@ -8,6 +8,12 @@
  </tileset>
  <tileset firstgid="74" name="right-block" tilewidth="64" tileheight="64" tilecount="1" columns="1">
   <image source="right-block.png" width="64" height="64"/>
+ </tileset>
+ <tileset firstgid="75" name="up-block" tilewidth="64" tileheight="64" tilecount="1" columns="1">
+  <image source="up-block.png" width="64" height="64"/>
+ </tileset>
+ <tileset firstgid="76" name="down-block" tilewidth="64" tileheight="64" tilecount="1" columns="1">
+  <image source="down-block.png" width="64" height="64"/>
  </tileset>
  <layer id="5" name="background" width="11" height="21">
   <data encoding="csv">
@@ -63,10 +69,28 @@
   <object id="3" name="playerspawner" type="playerSpawner" x="97" y="1246">
    <point/>
   </object>
-  <object id="5" name="leftBlock" type="leftBlock" x="608" y="1247">
+  <object id="5" name="leftBlock" type="leftBlock" x="543" y="480">
    <point/>
   </object>
-  <object id="10" name="leftBlock" type="leftBlock" x="544" y="477">
+  <object id="11" name="upBlock" type="upBlock" x="607" y="1248">
+   <point/>
+  </object>
+  <object id="13" name="upBlock" type="upBlock" x="607" y="1056">
+   <point/>
+  </object>
+  <object id="14" name="upBlock" type="upBlock" x="160" y="542">
+   <point/>
+  </object>
+  <object id="15" name="rightBlock" type="rightBlock" x="224" y="351">
+   <point/>
+  </object>
+  <object id="16" name="upBlock" type="upBlock" x="415" y="415">
+   <point/>
+  </object>
+  <object id="17" name="leftBlock" type="leftBlock" x="352" y="95">
+   <point/>
+  </object>
+  <object id="18" name="downBlock" type="downBlock" x="95" y="160">
    <point/>
   </object>
  </objectgroup>

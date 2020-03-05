@@ -1,7 +1,3 @@
-var gameSize = (window.innerWidth > window.innerHeight) ? window.innerHeight : window.innerWidth;
-var iOSOrientationChange = false;
-var iOSDevice = false;
-
 class PuzzleScene extends Phaser.Scene {
     map;
     player;
@@ -9,6 +5,10 @@ class PuzzleScene extends Phaser.Scene {
     rightBlock;
     wallLayer;
     interactLayer;
+    exitLayer;
+    constructor() {
+        super("GameScene");
+    }
 
 
     preload() {
@@ -19,11 +19,16 @@ class PuzzleScene extends Phaser.Scene {
         });
         this.load.image('left-block', 'assets/left-block.png')
         this.load.image('right-block', 'assets/right-block.png')
+        this.load.image('up-block', 'assets/up-block.png')
+        this.load.image('down-block', 'assets/down-block.png')
         this.load.tilemapTiledJSON('tilemap', 'assets/testmap.json');
     }
 
     create() {
         this.leftBlocks = this.physics.add.staticGroup();
+        this.rightBlocks = this.physics.add.staticGroup();
+        this.upBlocks = this.physics.add.staticGroup();
+        this.downBlocks = this.physics.add.staticGroup();
         this.map = this.make.tilemap({
             key: 'tilemap'
         });
@@ -47,6 +52,10 @@ class PuzzleScene extends Phaser.Scene {
                 this.createLeftBlock(object);
             } else if (object.type === "rightBlock") {
                 this.createRightBlock(object);
+            }else if (object.type === "upBlock") {
+                this.createUpBlock(object);
+            }else if (object.type === "downBlock") {
+                this.createDownBlock(object);
             }
         }, this);
         this.cursors = this.input.keyboard.createCursorKeys();
@@ -66,8 +75,16 @@ class PuzzleScene extends Phaser.Scene {
     }
 
     createRightBlock(object) {
-        this.rightBlock = this.physics.add.sprite(object.x, object.y, 'right-block').setImmovable();
+        this.rightBlocks.create(object.x, object.y, 'right-block')
     }
+
+    createUpBlock(object) {
+        this.upBlocks.create(object.x, object.y, 'up-block')
+    }
+
+    createDownBlock(object) {
+        this.downBlocks.create(object.x, object.y, 'down-block')
+    }    
 
     createCollision() {
         let wallLayer = this.map.getLayer('wall').tilemapLayer;
@@ -75,21 +92,8 @@ class PuzzleScene extends Phaser.Scene {
         this.physics.add.collider(this.player, wallLayer, this.resetPlayer, null, this);
         this.physics.add.collider(this.player, this.leftBlocks, this.turnLeft, null, this);
         this.physics.add.collider(this.player, this.rightBlocks, this.turnRight, null, this);
-    }
-
-    update() {
-        this.player.enableBody = true;
-        if (Phaser.Input.Keyboard.JustDown(this.cursors.space)) {
-            this.movePlayer(this.player);
-            let tile = this.wallLayer.getTileAtWorldXY(this.player.x, this.player.y);
-            if (tile) {
-                switch (tile.index) {
-                    case 7:
-                        this.resetPlayer();
-                        break;
-                }
-            }
-        }
+        this.physics.add.collider(this.player, this.upBlocks, this.goUp, null, this);
+        this.physics.add.collider(this.player, this.downBlocks, this.goDown, null, this);
     }
 
     movePlayer(player) {
@@ -99,13 +103,21 @@ class PuzzleScene extends Phaser.Scene {
     }
 
     turnLeft(player) {
-        console.log(this.player);
-       this.player.setAngle(-90);
+       this.player.setAngle(180);
        this.physics.velocityFromRotation(player.rotation, 300, player.body.velocity);
     }
 
     turnRight(player) {
-        console.log(this.player);
+       this.player.setAngle(0);
+       this.physics.velocityFromRotation(player.rotation, 300, player.body.velocity);
+    }
+
+    goUp(player) {
+       this.player.setAngle(270);
+       this.physics.velocityFromRotation(player.rotation, 300, player.body.velocity);
+    }
+
+    goDown(player){
        this.player.setAngle(90);
        this.physics.velocityFromRotation(player.rotation, 300, player.body.velocity);
     }
@@ -133,4 +145,34 @@ class PuzzleScene extends Phaser.Scene {
         return object; //Return the new object w/ custom properties
     }
 
+    update() {
+        this.player.enableBody = true;
+        if (Phaser.Input.Keyboard.JustDown(this.cursors.space)) {
+            this.movePlayer(this.player);
+        }
+        let tile = this.exitLayer.getTileAtWorldXY(this.player.x, this.player.y);
+        if (tile) {
+            switch (tile.index) {
+                case 12:
+                    this.processExit();
+                    break;
+            }
+        }
+    }
+
+    processExit() {
+        this.physics.pause();
+        console.log("goal achieved");
+    }
+
+}
+
+class UIScene extends Phaser.Scene {
+    constructor() {
+        super("UIScene");
+    }
+
+    createUIElements(gameScene) {
+        this.gameScene = gameScene;
+    }
 }
