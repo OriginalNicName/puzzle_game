@@ -1,3 +1,7 @@
+var gameSize = (window.innerWidth > window.innerHeight) ? window.innerHeight : window.innerWidth;
+var iOSOrientationChange = false;
+var iOSDevice = false;
+
 class PuzzleScene extends Phaser.Scene {
     map;
     player;
@@ -47,23 +51,32 @@ class PuzzleScene extends Phaser.Scene {
         this.cursors = this.input.keyboard.createCursorKeys();
         this.camera = this.cameras.getCamera("");
         this.camera.setBounds(0, 0, this.map.widthInPixels, this.map.height * this.map.tileHeight);
+        this.createCollision();
     }
 
     createPlayer(object) {
         this.player = this.physics.add.sprite(object.x, object.y, 'player');
         this.player.setCollideWorldBounds(true);
-        this.physics.add.collider(this.player, this.interactLayer, this.changeDirection, null, this);
+        // this.physics.add.collider(this.player, this.interactLayer, this.changeDirection, null, this);
         // this.physics.add.collider(this.player, this.wallLayer, this.resetPlayer, null, this);
 
 
     }
 
     createLeftBlock(object) {
-        this.leftBlock = this.physics.add.sprite(object.x, object.y, 'left-block');
+        this.leftBlock = this.physics.add.sprite(object.x, object.y, 'left-block').setImmovable();
+        
     }
 
     createRightBlock(object) {
-        this.rightBlock = this.physics.add.sprite(object.x, object.y, 'right-block');
+        this.rightBlock = this.physics.add.sprite(object.x, object.y, 'right-block').setImmovable();
+    }
+
+    createCollision(){
+        let wallLayer = this.map.getLayer('wall').tilemapLayer;
+        wallLayer.setCollisionBetween(0, 1000);
+        this.physics.add.collider(this.player, wallLayer, this.resetPlayer, null, this);
+        this.physics.add.collider(this.player, this.leftBlock);
     }
 
     update() {
@@ -87,9 +100,9 @@ class PuzzleScene extends Phaser.Scene {
         this.physics.velocityFromRotation(player.rotation, 300, player.body.velocity);
     }
 
-    changeDirection() {
-
-    }
+    // changeDirection(player) {
+    //     if ()
+    // }
 
     resetPlayer(player) {
         this.player.destroy(true)
