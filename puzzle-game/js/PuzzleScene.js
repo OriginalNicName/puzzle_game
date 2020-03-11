@@ -6,9 +6,9 @@ class PuzzleScene extends Phaser.Scene {
     wallLayer;
     interactLayer;
     exitLayer;
-    uiScene;
-    constructor() {
-        super("GameScene");
+    uiScene = this;
+    constructor(key) {
+        super(key);
     }
 
     init(data) {
@@ -25,27 +25,12 @@ class PuzzleScene extends Phaser.Scene {
         }
     }
 
-    preload() {
-        this.load.image('tileset', 'assets/game/puzzle-tileset.png');
-        this.load.image('player', 'assets/game/player.png', {
-            frameWidth: 24,
-            frameHeight: 24
-        });
-        this.load.image('left-block', 'assets/game/left-block.png')
-        this.load.image('right-block', 'assets/game/right-block.png')
-        this.load.image('up-block', 'assets/game/up-block.png')
-        this.load.image('down-block', 'assets/game/down-block.png')
-        this.load.tilemapTiledJSON('tilemap', 'assets/game/testmap.json');
-    }
 
     create() {
         this.leftBlocks = this.physics.add.staticGroup();
         this.rightBlocks = this.physics.add.staticGroup();
         this.upBlocks = this.physics.add.staticGroup();
         this.downBlocks = this.physics.add.staticGroup();
-        this.map = this.make.tilemap({
-            key: 'tilemap'
-        });
         let landscape = this.map.addTilesetImage('puzzle-tileset', 'tileset');
         this.physics.world.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
         this.map.createStaticLayer('background', landscape, 0, 0);
@@ -80,6 +65,7 @@ class PuzzleScene extends Phaser.Scene {
         this.uiScene = this.scene.get("UIScene");
         this.scene.launch(this.uiScene);
         this.uiScene.createUIElements(this);
+        console.log(this);
         this.music.addAudio('gameMusic', { loop: true });
         this.music.play('gameMusic');
         this.sfx.addAudio('success')
@@ -117,10 +103,10 @@ class PuzzleScene extends Phaser.Scene {
         this.physics.add.collider(this.player, this.downBlocks, this.goDown, null, this);
     }
 
-    movePlayer(player) {
-        player.body.collideWorldBounds = true;
-        player.body.onWorldBounds = true;
-        this.physics.velocityFromRotation(player.rotation, 300, player.body.velocity);
+    movePlayer() {
+        this.player.body.collideWorldBounds = true;
+        this.player.body.onWorldBounds = true;
+        this.physics.velocityFromRotation(this.player.rotation, 300, this.player.body.velocity);
     }
 
     turnLeft(player) {
@@ -145,6 +131,7 @@ class PuzzleScene extends Phaser.Scene {
 
     resetPlayer() {
         this.player.destroy();
+        this.music.stopAll();
         this.create();
     }
 
@@ -169,6 +156,72 @@ class PuzzleScene extends Phaser.Scene {
         if (Phaser.Input.Keyboard.JustDown(this.cursors.space)) {
             this.movePlayer(this.player);
         }
+    }
+
+}
+
+class SceneA extends PuzzleScene {
+    constructor() {
+        super('sceneA');
+    }
+
+    preload() {
+        this.load.image('tileset', 'assets/game/puzzle-tileset.png');
+        this.load.image('left-block', 'assets/game/left-block.png')
+        this.load.image('right-block', 'assets/game/right-block.png')
+        this.load.image('up-block', 'assets/game/up-block.png')
+        this.load.image('down-block', 'assets/game/down-block.png')
+        this.load.image('player', 'assets/game/player.png', {
+            frameWidth: 24,
+            frameHeight: 24
+        });
+        this.load.tilemapTiledJSON('level1', 'assets/game/level1.json');
+    }
+
+    create() {
+        this.map = this.make.tilemap({
+            key: 'level1'
+        });
+        super.create();
+    }
+
+    update() {
+        super.update();
+        let tile = this.exitLayer.getTileAtWorldXY(this.player.x, this.player.y);
+        if (tile) {
+            switch (tile.index) {
+                case 12:
+                    this.processExit();
+                    break;
+            }
+        }
+    }
+
+    processExit() {
+        this.sfx.play('success');
+        this.music.stopAll();
+        this.scene.start('sceneB')
+    }
+}
+
+class SceneB extends PuzzleScene {
+    constructor() {
+        super('sceneB');
+    }
+
+    preload() {
+        this.load.tilemapTiledJSON('level2', 'assets/game/level2.json');
+    }
+
+    create() {
+        this.map = this.make.tilemap({
+            key: 'level2'
+        });
+        super.create();
+    }
+
+    update() {
+        super.update();
         let tile = this.exitLayer.getTileAtWorldXY(this.player.x, this.player.y);
         if (tile) {
             switch (tile.index) {
@@ -183,7 +236,6 @@ class PuzzleScene extends Phaser.Scene {
         this.sfx.play('success');
         this.physics.pause();
     }
-
 }
 
 class UIScene extends Phaser.Scene {
@@ -193,15 +245,20 @@ class UIScene extends Phaser.Scene {
 
     createUIElements(gameScene) {
         this.gameScene = gameScene;
-
         this.playMenu = new Menu(this, 705, 0, 195, 1350, 'menuBox', [
             new Button(this, 10, 100, "playButton", function () {
-                this.scene.gameScene.body.movePlayer();
+                gameScene.movePlayer(this);
             }),
         ]);
         this.add.existing(this.playMenu);
         this.playMenu.setVisible(true);
+        this.input.on('pointerup', function (pointer) {
+            if (pointer.lastBtn) {
+                pointer.lastBtn.clearTint();
+            }
+        });
     }
+
 }
 
 class MenuScene extends Phaser.Scene {
@@ -253,7 +310,7 @@ class MenuScene extends Phaser.Scene {
             }),
             new Button(this, 30, 150, 'playButton', function () {
                 this.scene.music.stopAll();
-                this.scene.scene.start("GameScene", {
+                this.scene.scene.start("sceneA", {
                     music: this.scene.music
                 })
             }), this.menuText = this.add.text(240, 220, "Play", {
@@ -285,6 +342,7 @@ class MenuScene extends Phaser.Scene {
             }),
             new Button(this, 30, 350, 'muteButton', function () {
                 this.scene.music.toggleMute();
+                this.scene.sfx.toggleMute();
             }, true, true, !this.music.muted, 'unmuteButton'),
             this.menuText = this.add.text(240, 410, "Mute", {
                 font: '64px Forte',

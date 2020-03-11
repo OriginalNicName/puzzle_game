@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="11" height="21" tilewidth="64" tileheight="64" infinite="0" nextlayerid="11" nextobjectid="24">
+ <tileset firstgid="1" name="puzzle-tileset" tilewidth="64" tileheight="64" spacing="2" margin="1" tilecount="72" columns="8">
+  <image source="puzzle-tileset.png" width="528" height="594"/>
+ </tileset>
+ <tileset firstgid="73" name="left-block" tilewidth="64" tileheight="64" tilecount="1" columns="1">
+  <image source="left-block.png" width="64" height="64"/>
+ </tileset>
+ <tileset firstgid="74" name="right-block" tilewidth="64" tileheight="64" tilecount="1" columns="1">
+  <image source="right-block.png" width="64" height="64"/>
+ </tileset>
+ <tileset firstgid="75" name="up-block" tilewidth="64" tileheight="64" tilecount="1" columns="1">
+  <image source="up-block.png" width="64" height="64"/>
+ </tileset>
+ <tileset firstgid="76" name="down-block" tilewidth="64" tileheight="64" tilecount="1" columns="1">
+  <image source="down-block.png" width="64" height="64"/>
+ </tileset>
+ <layer id="5" name="background" width="11" height="21">
+  <data encoding="csv">
+9,9,9,9,9,9,9,9,9,9,9,
+9,9,9,9,9,9,9,9,9,9,9,
+9,9,9,9,9,9,9,9,9,9,9,
+9,9,9,9,9,9,9,9,9,9,9,
+9,9,9,9,9,9,9,9,9,9,9,
+9,9,9,9,9,9,9,9,9,9,9,
+9,9,9,9,9,9,9,9,9,9,9,
+9,9,9,9,9,9,9,9,9,9,9,
+9,9,9,9,9,9,9,9,9,9,9,
+9,9,9,9,9,9,9,9,9,9,9,
+9,9,9,9,9,9,9,9,9,9,9,
+9,9,9,9,9,9,9,9,9,9,9,
+9,9,9,9,9,9,9,9,9,9,9,
+9,9,9,9,9,9,9,9,9,9,9,
+9,9,9,9,9,9,9,9,9,9,9,
+9,9,9,9,9,9,9,9,9,9,9,
+9,9,9,9,9,9,9,9,9,9,9,
+9,9,9,9,9,9,9,9,9,9,9,
+9,9,9,9,9,9,9,9,9,9,9,
+9,9,9,9,9,9,9,9,9,9,9,
+9,9,9,9,9,9,9,9,9,9,9
+</data>
+ </layer>
+ <layer id="6" name="drop-points" width="11" height="21">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,10,0,0,0,0,0,10,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,10,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,10,0,0,0,0,
+0,0,0,0,0,10,0,0,10,0,0,
+0,0,0,0,10,0,0,10,0,0,0,
+0,0,0,0,0,0,10,0,0,0,0,
+0,0,0,0,0,10,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="10" name="objects">
+  <object id="3" name="playerspawner" type="playerSpawner" x="97" y="1246">
+   <point/>
+  </object>
+  <object id="5" name="leftBlock" type="leftBlock" x="480" y="607">
+   <point/>
+  </object>
+  <object id="13" name="upBlock" type="upBlock" x="415" y="1183">
+   <point/>
+  </object>
+  <object id="15" name="rightBlock" type="rightBlock" x="287" y="1118">
+   <point/>
+  </object>
+  <object id="18" name="downBlock" type="downBlock" x="95" y="607">
+   <point/>
+  </object>
+  <object id="19" name="upBlock" type="upBlock" x="480" y="1118">
+   <point/>
+  </object>
+  <object id="20" name="upBlock" type="upBlock" x="543" y="1055">
+   <point/>
+  </object>
+  <object id="21" name="upBlock" type="upBlock" x="351" y="1055">
+   <point/>
+  </object>
+  <object id="22" name="upBlock" type="upBlock" x="416" y="992">
+   <point/>
+  </object>
+  <object id="23" name="rightBlock" type="rightBlock" x="159" y="864">
+   <point/>
+  </object>
+ </objectgroup>
+ <layer id="8" name="goal" width="11" height="21">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,12,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="7" name="wall" width="11" height="21">
+  <data encoding="csv">
+7,7,7,7,7,7,7,7,7,7,7,
+7,7,7,7,7,0,7,7,7,7,7,
+7,7,7,7,7,0,7,7,7,7,7,
+7,7,7,0,0,0,0,0,7,7,7,
+7,7,0,0,0,0,0,0,0,7,7,
+7,0,0,0,0,0,0,0,0,0,7,
+7,0,0,0,0,0,0,0,0,0,7,
+7,0,0,0,0,0,0,0,0,0,7,
+7,0,0,0,0,0,0,0,0,0,7,
+7,0,0,0,0,0,0,0,0,0,7,
+7,0,0,0,0,0,0,0,0,0,7,
+7,0,0,0,0,0,0,0,0,7,7,
+7,0,0,0,0,0,0,0,0,7,7,
+7,0,0,0,0,0,0,0,0,7,7,
+7,0,0,0,0,7,7,0,0,7,7,
+7,0,0,0,7,7,0,0,0,7,7,
+7,0,0,7,7,0,0,0,0,7,7,
+7,0,0,7,0,0,0,0,7,7,7,
+7,7,7,7,0,0,0,7,7,7,7,
+7,0,0,0,0,0,7,7,7,7,7,
+7,7,7,7,7,7,7,7,7,7,7
+</data>
+ </layer>
+</map>
